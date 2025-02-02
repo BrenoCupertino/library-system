@@ -8,19 +8,28 @@ public abstract class UsuarioAbstrato
 {
     protected String codigoDoUsuario;
     protected String nome;
-    protected int tempoDeEmprestimo;
+    protected int tempoLimiteDeEmprestimo;
     protected List<Livro> livrosEmEmprestimo = new ArrayList<Livro>();
 
     public abstract String emprestar(Livro livro);
-    public abstract String getCodigo();
 
-    public int getTempoEmprestimo()
+    public String getCodigo()
     {
-        return this.tempoDeEmprestimo;
+        return this.codigoDoUsuario;
+    }
+
+    public int getTempoLimiteDeEmprestimo()
+    {
+        return this.tempoLimiteDeEmprestimo;
     }
 
     public List<Livro> getLivrosEmEmprestimo()
     {
         return livrosEmEmprestimo;
+    }
+
+    public String getNome()
+    {
+        return this.nome;
     }
 }

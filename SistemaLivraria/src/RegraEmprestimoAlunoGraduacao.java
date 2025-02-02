@@ -1,12 +1,11 @@
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RegraEmprestimoAlunoGraduacao implements RegraEmprestimoAbstratoAluno
 {
-    
-
     public boolean estaEmDia(UsuarioAbstrato usuario)
     {
         Repositorio repositorio = Repositorio.obterInstancia();
@@ -18,9 +17,9 @@ public class RegraEmprestimoAlunoGraduacao implements RegraEmprestimoAbstratoAlu
             {
                 if (emprestimo.getEmprestimoEmAberto())
                 {
-                    long diasEmEmprestimo = ChronoUnit.DAYS.between(emprestimo.getDataInicio(), emprestimo.getDataFim());
+                    long diasEmEmprestimo = ChronoUnit.DAYS.between(emprestimo.getDataInicio(), LocalDateTime.now());
 
-                    if (diasEmEmprestimo > 4)
+                    if (diasEmEmprestimo > usuario.getTempoLimiteDeEmprestimo())
                     {
                         return false;
                     }
@@ -29,6 +28,7 @@ public class RegraEmprestimoAlunoGraduacao implements RegraEmprestimoAbstratoAlu
         }
         return true;
     }
+
     public boolean abaixoLimiteDeEmprestimos(UsuarioAbstrato usuario)
     {
         AlunoGraduacao alunoGraduação =  (AlunoGraduacao) usuario;
@@ -36,13 +36,14 @@ public class RegraEmprestimoAlunoGraduacao implements RegraEmprestimoAbstratoAlu
         
         return abaixoLimiteDeEmprestimos;
     }
+
     public boolean quantidadeDeReservaMenorDoQueExemplares(UsuarioAbstrato usuario, Livro livro)
     {
         Repositorio repositorio = Repositorio.obterInstancia();
         int quantidadeDeExemplares = livro.quantidadeDeExemplares();
         int quantidadeDeReservas = 0;
         boolean usuarioTemReserva = false;
-        List<Reserva> reservasDoLivro = new ArrayList<>();
+        List<Reserva> reservasDoLivro = new ArrayList<Reserva>();
         reservasDoLivro = repositorio.obterReservasDeUmLivro(livro.getCodigo());
 
         for(Reserva reserva : reservasDoLivro)
@@ -59,6 +60,7 @@ public class RegraEmprestimoAlunoGraduacao implements RegraEmprestimoAbstratoAlu
 
         return false;
     }
+
     public boolean reservasMenoresQueExemplares(UsuarioAbstrato usuario, Livro livro)
     {
         Repositorio repositorio = Repositorio.obterInstancia();
@@ -86,6 +88,7 @@ public class RegraEmprestimoAlunoGraduacao implements RegraEmprestimoAbstratoAlu
             }
         return true;
     }
+    
     public boolean jaTemEmprestimoDesteLivro(UsuarioAbstrato usuario, Livro livro)
     {
         List<Livro> livrosEmEmprestimo = usuario.getLivrosEmEmprestimo();

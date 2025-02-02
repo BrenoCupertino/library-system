@@ -64,4 +64,16 @@ public class Repositorio
     {
         return emprestimos;
     }
+
+    public void removerReservaDaLista(String codigoDoUsuario, String codigoDoLivro)
+    {
+        for(Reserva reserva : reservas)
+        {
+            if(reserva.getCodigoDoUsuario().equals(codigoDoUsuario) && reserva.getCodigoDoLivro().equals(codigoDoLivro))
+                {
+                    reserva.cancelarReserva();
+                    reservas.remove(reserva);
+                }
+        }
+    }
 }

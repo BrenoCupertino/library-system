@@ -5,8 +5,8 @@ public class Exemplar {
     private boolean disponivel;
     private String codigoExemplar;
 
-    public Exemplar(boolean disponivel) {
-        this.disponivel = disponivel;
+    public Exemplar(String codigoExemplar) {
+        this.disponivel = true;
     }
 
     public boolean isDisponivel() {
@@ -20,5 +20,15 @@ public class Exemplar {
     public String getCodigoExemplar()
     {
         return codigoExemplar;
+    }
+
+    public void indisponibilizarExemplar()
+    {
+        this.disponivel = false;
+    }
+
+    public void disponibilizarExemplar()
+    {
+        this.disponivel = true;
     }
 }

@@ -1,28 +1,103 @@
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
 public class RegraEmprestimoAlunoPosGraduacao implements RegraEmprestimoAbstratoAluno
 {
     public boolean estaEmDia(UsuarioAbstrato usuario)
     {
-        return false; // Falta codificar
+        Repositorio repositorio = Repositorio.obterInstancia();
+        List<Emprestimo> emprestimos = repositorio.ObterListaDeEmprestimos();
+
+        for (Emprestimo emprestimo : emprestimos)
+        {
+            if(emprestimo.getCodigoDoUsuario().equals(usuario.getCodigo()))
+            {
+                if (emprestimo.getEmprestimoEmAberto())
+                {
+                    long diasEmEmprestimo = ChronoUnit.DAYS.between(emprestimo.getDataInicio(), LocalDateTime.now());
+
+                    if (diasEmEmprestimo > usuario.getTempoLimiteDeEmprestimo())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
     public boolean abaixoLimiteDeEmprestimos(UsuarioAbstrato usuario)
     {
         AlunoPosGraduacao alunoPosGraduação =  (AlunoPosGraduacao) usuario;
-        alunoPosGraduação.abaixoLimiteDeEmprestimos();
+        boolean abaixoLimiteDeEmprestimos = alunoPosGraduação.abaixoLimiteDeEmprestimos();
+        
+        return abaixoLimiteDeEmprestimos;
+    }
+    public boolean quantidadeDeReservaMenorDoQueExemplares(UsuarioAbstrato usuario, Livro livro)
+    {
+        Repositorio repositorio = Repositorio.obterInstancia();
+        int quantidadeDeExemplares = livro.quantidadeDeExemplares();
+        int quantidadeDeReservas = 0;
+        boolean usuarioTemReserva = false;
+        List<Reserva> reservasDoLivro = new ArrayList<>();
+        reservasDoLivro = repositorio.obterReservasDeUmLivro(livro.getCodigo());
+
+        for(Reserva reserva : reservasDoLivro)
+        {
+            if (usuario.getCodigo().equals(reserva.getCodigoDoUsuario()))
+            {
+                usuarioTemReserva = true;
+            }
+
+            quantidadeDeReservas++;
+        }
+        if (quantidadeDeReservas < quantidadeDeExemplares && !usuarioTemReserva)
+            return true;
 
         return false;
     }
-    public boolean jaPossuiEsteLivro(UsuarioAbstrato usuario)
+    public boolean reservasMenoresQueExemplares(UsuarioAbstrato usuario, Livro livro)
     {
-        return false;
+        Repositorio repositorio = Repositorio.obterInstancia();
+        int quantidadeDeExemplares = livro.quantidadeDeExemplares();
+        int quantidadeDeReservas = 0;
+        boolean usuarioTemReserva = false;
+        List<Reserva> reservasDoLivro = new ArrayList<Reserva>();
+        reservasDoLivro = repositorio.obterReservasDeUmLivro(livro.getCodigo());
+
+        for(Reserva reserva : reservasDoLivro)
+        {
+            if (usuario.getCodigo().equals(reserva.getCodigoDoUsuario()))
+            {
+                usuarioTemReserva = true;
+            }
+
+            quantidadeDeReservas++;
+        }
+        if (quantidadeDeReservas >= quantidadeDeExemplares)
+            {
+                if (usuarioTemReserva) {
+                    return true;
+                }
+                return false;
+            }
+        return true;
     }
-    public boolean temReservaParaEsteLivro(UsuarioAbstrato usuario)
+    public boolean jaTemEmprestimoDesteLivro(UsuarioAbstrato usuario, Livro livro)
     {
+        List<Livro> livrosEmEmprestimo = usuario.getLivrosEmEmprestimo();
+
+        for(Livro livroEmprestado : livrosEmEmprestimo)
+        {
+            if(livroEmprestado.getCodigo().equals(livro.getCodigo()))
+            {
+                return true;
+            }
+        }
         return false;
-    }
-    public boolean reservasMenoresQueExemplares(UsuarioAbstrato usuario)
-    {
-        return false;
+        
     }
 
     @Override
@@ -32,10 +107,10 @@ public class RegraEmprestimoAlunoPosGraduacao implements RegraEmprestimoAbstrato
         boolean temExemplarDisponivel = livro.temExemplarDisponivel();
         boolean estaEmDia = estaEmDia(usuario);
         boolean abaixoLimiteDeEmprestimos = abaixoLimiteDeEmprestimos(usuario);
-        boolean jaPossuiEsteLivro = jaPossuiEsteLivro(usuario);
-        boolean temReservaParaEsteLivro = temReservaParaEsteLivro(usuario);
-        boolean reservasMenoresQueExemplares = reservasMenoresQueExemplares(usuario);
+        boolean quantidadeDeReservaMenorDoQueExemplares = quantidadeDeReservaMenorDoQueExemplares(usuario, livro);
+        boolean reservasMenoresQueExemplares = reservasMenoresQueExemplares(usuario, livro);
+        boolean jaTemEmprestimoDesteLivro = jaTemEmprestimoDesteLivro(usuario,livro);
 
-        return temExemplarDisponivel && estaEmDia && abaixoLimiteDeEmprestimos && !jaPossuiEsteLivro && (reservasMenoresQueExemplares || temReservaParaEsteLivro);
+        return temExemplarDisponivel && estaEmDia && abaixoLimiteDeEmprestimos && quantidadeDeReservaMenorDoQueExemplares && (reservasMenoresQueExemplares || !jaTemEmprestimoDesteLivro);
     }
 }

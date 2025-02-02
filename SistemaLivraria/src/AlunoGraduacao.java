@@ -5,9 +5,12 @@ public class AlunoGraduacao extends UsuarioAbstrato
     protected int quantidadeLimiteDeEmprestimos;
     protected int quantidadeDeLivrosEmEmprestimo;
 
-    public AlunoGraduacao()
+    
+    public AlunoGraduacao(String codigoDoUsuario, String nome)
     {
-        super.tempoDeEmprestimo = 4;
+        super.codigoDoUsuario = codigoDoUsuario;
+        super.nome = nome;
+        super.tempoLimiteDeEmprestimo = 4;
         quantidadeLimiteDeEmprestimos = 2;
     }
 
@@ -17,20 +20,23 @@ public class AlunoGraduacao extends UsuarioAbstrato
     {
         String mensagemDeRetorno;
         RegraEmprestimoAbstratoAluno verificadorDeDisponibilidade = new RegraEmprestimoAlunoGraduacao();
+        
         boolean disponivel = verificadorDeDisponibilidade.podeEmprestar(this, livro);
         
         if (disponivel)
         {
-            Emprestimo emprestimo = new Emprestimo(this.getCodigo(), livro.getCodigo(), LocalDateTime.now());
             Repositorio repositorio = Repositorio.obterInstancia();
+            Emprestimo emprestimo = new Emprestimo(this.getCodigo(), livro.getCodigo(), LocalDateTime.now());
             repositorio.ObterListaDeEmprestimos().add(emprestimo);
             super.livrosEmEmprestimo.add(livro);
-            mensagemDeRetorno = "Empréstimo realizado com sucesso !";
+            repositorio.removerReservaDaLista(super.codigoDoUsuario, livro.getCodigo());
+            livro.obterExemplarDisponivel().indisponibilizarExemplar();
+            mensagemDeRetorno = String.format("Empréstimo do livro %s realizado para o usuário %s", livro.getTitulo() ,super.getNome());
             return mensagemDeRetorno;
         }
         else
         {
-            mensagemDeRetorno = "Não foi possível realizar o empréstimo !";
+            mensagemDeRetorno = String.format("Não foi possível realizar o empréstimo do livro %s para o usuário %s", livro.getTitulo() ,super.getNome());
             return mensagemDeRetorno;
         }
     }

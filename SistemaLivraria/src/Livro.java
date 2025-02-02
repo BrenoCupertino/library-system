@@ -10,7 +10,7 @@ public class Livro
     private String edicao;
     private String anoPublicacao;
     private List<Exemplar> exemplares = new ArrayList<Exemplar>();
-    private int quantidadeDeExemplares = 0;
+    private int quantidadeDeExemplares;
 
    
 
@@ -22,6 +22,7 @@ public class Livro
         this.autores = autores;
         this.edicao = edicao;
         this.anoPublicacao = anoPublicacao;
+        quantidadeDeExemplares = 0;
     }
 
 
@@ -49,4 +50,23 @@ public class Livro
         return quantidadeDeExemplares;
     }
    
+    public Exemplar obterExemplarDisponivel()
+    {
+        for (Exemplar exemplar : exemplares)
+        {
+            if (exemplar.isDisponivel())
+                return exemplar;
+        }
+        return null;
+    }
+
+    public String getTitulo()
+    {
+        return this.titulo;
+    }
+
+    public void adicionarExemplar(Exemplar exemplar)
+    {
+        exemplares.add(exemplar);
+    }
 }
