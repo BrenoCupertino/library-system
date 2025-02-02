@@ -15,5 +15,7 @@ public class UserInfoCommand implements Icommand {
     public void execute(LoadParameters parameters) {
         User user = repository.getUserById(parameters.getFirstParameter());
         repository.userInfoRequest(user);
+
+
     }
 }
