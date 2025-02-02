@@ -6,9 +6,11 @@ import java.util.List;
 
 public class Repositorio
 {
-    private List<UsuarioInterface> usuarios = new ArrayList<UsuarioInterface>();
+    private List<UsuarioAbstrato> usuarios = new ArrayList<UsuarioAbstrato>();
 	private List<Livro> livros = new ArrayList<Livro>();
-
+    private List<Reserva> reservas = new ArrayList<Reserva>();
+    private List<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
+                                                
     private static Repositorio instancia;
     
     private Repositorio()
@@ -24,9 +26,9 @@ public class Repositorio
         return instancia;
     }
 
-    public UsuarioInterface obterUsuarioPorCodigo(String codigoDoUsuario)
+    public UsuarioAbstrato obterUsuarioPorCodigo(String codigoDoUsuario)
     {
-        for (UsuarioInterface usuario : usuarios)
+        for (UsuarioAbstrato usuario : usuarios)
         {
             if (usuario.getCodigo() == codigoDoUsuario)
                 return usuario;
@@ -42,5 +44,24 @@ public class Repositorio
                 return livro;
         }
         return null;
+    }
+
+    public List<Reserva> obterReservasDeUmLivro(String codigoDoLivro)
+    {
+        List<Reserva> reservasDoLivro = new ArrayList<>();
+
+        for(Reserva reserva : reservas)
+        {
+            if (reserva.getCodigoDoLivro().equals(codigoDoLivro))
+            {
+                reservasDoLivro.add(reserva);
+            }
+        }
+        return reservasDoLivro;
+    }
+
+    public List<Emprestimo> ObterListaDeEmprestimos()
+    {
+        return emprestimos;
     }
 }

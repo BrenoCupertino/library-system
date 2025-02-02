@@ -1,17 +1,23 @@
-public class Professor implements UsuarioInterface
+
+public class Professor extends UsuarioAbstrato
 {
-    private String codigoDoUsuario;
-    private String nome;
+
+    public Professor()
+    {
+        super.tempoDeEmprestimo = 8;
+    }
 
     @Override
-    public void emprestar() 
+    public String emprestar(Livro livro) 
     {
         
     }
 
     @Override
     public String getCodigo() {
-        return this.codigoDoUsuario;
+        return super.codigoDoUsuario;
     }
 
+   
+    
 }

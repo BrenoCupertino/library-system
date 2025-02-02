@@ -1,10 +1,17 @@
-public class AlunoPosGraduacao implements UsuarioInterface
+
+public class AlunoPosGraduacao extends UsuarioAbstrato
 {
-    private String codigoDoUsuario;
-    private String nome;
+    protected int quantidadeLimiteDeEmprestimos;
+    protected int quantidadeDeLivrosEmEmprestimo;
+
+    public AlunoPosGraduacao()
+    {
+        super.tempoDeEmprestimo = 5;
+        quantidadeLimiteDeEmprestimos = 3;
+    }
 
     @Override
-    public void emprestar()
+    public String emprestar(Livro livro)
     {
         
     }
@@ -12,7 +19,18 @@ public class AlunoPosGraduacao implements UsuarioInterface
     @Override
     public String getCodigo()
     {
-        return this.codigoDoUsuario;
+        return super.codigoDoUsuario;
     }
+    
+    public boolean abaixoLimiteDeEmprestimos()
+    {
+        for (Livro livro : livrosEmEmprestimo)
+        {
+            quantidadeDeLivrosEmEmprestimo ++;
+        }
+        if (quantidadeDeLivrosEmEmprestimo == quantidadeLimiteDeEmprestimos)
+            return false;
 
+        return true;
+    }
 }
