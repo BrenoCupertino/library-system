@@ -14,9 +14,10 @@ public abstract class User {
     private String name;
     private ILoanStrategy loanStrategy;
     private int maxLoanDays;
-    private static final int maxReservations = 3;
+    private static final int maxReserves = 3;
     private ArrayList<LoanedBook> loans = new ArrayList<LoanedBook>();
-    private ArrayList<ReservedBook> reserves = new ArrayList<ReservedBook>(3);
+    private ArrayList<ReservedBook> reserves = new ArrayList<ReservedBook>();
+    private ArrayList<LoanedBook> historyLoans = new ArrayList<LoanedBook>();
 
     public User(String id, String name, ILoanStrategy loanStrategy, int maxLoanDays) {
         this.id = id;
@@ -44,7 +45,7 @@ public abstract class User {
 
     public boolean isBookReserved(Book book) {
         for(ReservedBook reserve: this.reserves) {
-            if(reserve.getBook().getId().equals(book.getId())) {
+            if(reserve.getBook().equals(book)) {
                 return true;
             }
         }
@@ -60,6 +61,15 @@ public abstract class User {
         return null;
     }
 
+    public LoanedBook getLoanedBook(Book book) {
+        for (LoanedBook loanedBook : this.loans) {
+            if (book == loanedBook.getBookSample().getBook()) {
+                return loanedBook;
+            }
+        }
+        return null;
+    }
+
     public void removeReservation(ReservedBook reservedBook) {
         this.reserves.remove(reservedBook);
     }
@@ -68,23 +78,64 @@ public abstract class User {
         if(!isBookReserved(book)) {
             return;
         }
-        this.removeReservation(getReversedBook(book));
+        removeReservation(getReversedBook(book));
         book.removeReservation(this);
-    }
-
-    public void loanSample(BookSample sample) {
-        sample.setAvaliable(false);
-        loans.add(new LoanedBook(sample, this.maxLoanDays));
     }
 
     public void loanBook(Book book) {
         BookSample sample = book.getAvaliableSample();
 
         if (this.canGetLoan(book)) {
-            loanSample(sample);
+            sample.setAvaliable(false);
+            loans.add(new LoanedBook(sample, this.maxLoanDays));
             //Mensagem de sucesso
         }
         this.analyseReservation(book);
+    }
+
+    public void removeLoanedBook(LoanedBook loanedBook) {
+        this.loans.remove(loanedBook);
+    }
+
+    public void addLoanedBookToHistory(LoanedBook loanedBook) {
+        this.historyLoans.add(loanedBook);
+    }
+
+    public void returnBook(Book book) {
+        LoanedBook loanedBook = getLoanedBook(book);
+        if(loanedBook == null) {
+            //Mensagem de Erro
+            return;
+        }
+        removeLoanedBook(loanedBook);
+        loanedBook.returnedBook();
+        addLoanedBookToHistory(loanedBook);
+        //Mensagem Sucesso
+    }
+
+    public boolean onReservationLimit() {
+        return this.reserves.size() < maxReserves;
+    }
+
+    public boolean canIReserve(Book book) {
+        if(!onReservationLimit()) {
+            return false;
+        }
+
+        if(isBookReserved(book)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void addReservation(Book book) {
+        if(!canIReserve(book)) {
+            return;
+        }
+
+        this.reserves.add(new ReservedBook(book));
+
     }
 
     public abstract boolean userOnLimit();

@@ -5,18 +5,24 @@ import java.time.LocalDate;
 public class LoanedBook {
     private BookSample bookSample;
     private LocalDate loanDate;
-    private LocalDate loanExpiratioDate;
+    private LocalDate loanReturnDate;
     private LoanStatus loanStatus;
 
     public LoanedBook(BookSample bookSample, int maxUserLoanDays) {
         this.bookSample = bookSample;
         this.loanDate = LocalDate.now();
-        this.loanExpiratioDate = loanDate.plusDays(maxUserLoanDays);
-        this.loanStatus = LoanStatus.TO_DAY;
+        this.loanReturnDate = loanDate.plusDays(maxUserLoanDays);
+        this.loanStatus = LoanStatus.LOANED;
     }
 
     public BookSample getBookSample() {
         return bookSample;
+    }
+
+    public void returnedBook() {
+        setLoanStatus(LoanStatus.RETURNED);
+        setLoanReturnDate(LocalDate.now());
+        this.bookSample.setAvaliable(true);
     }
 
     public void setBookSample(BookSample bookSample) {
@@ -31,12 +37,12 @@ public class LoanedBook {
         this.loanDate = loanDate;
     }
 
-    public LocalDate getLoanExpiratioDate() {
-        return loanExpiratioDate;
+    public LocalDate getLoanReturnDate() {
+        return loanReturnDate;
     }
 
-    public void setLoanExpiratioDate(LocalDate loanExpiratioDate) {
-        this.loanExpiratioDate = loanExpiratioDate;
+    public void setLoanReturnDate(LocalDate loanReturnDate) {
+        this.loanReturnDate = loanReturnDate;
     }
 
     public LoanStatus getLoanStatus() {

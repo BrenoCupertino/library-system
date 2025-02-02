@@ -1,18 +1,22 @@
 package subjects.books;
 
+import observer.IObserver;
+import observer.ISubject;
+import subjects.user.Professor;
 import subjects.user.User;
 
 import java.util.ArrayList;
 
-public class Book {
+public class Book implements ISubject {
     private String id;
     private String name;
     private String editor;
     private String edition;
     private String year;
-    private ArrayList<String> authors = new ArrayList<String>();
+    private ArrayList<String> authors;
     private ArrayList<BookSample> samples = new ArrayList<BookSample>();
     private ArrayList<User> reservations = new ArrayList<User>();
+    private ArrayList<IObserver> observers = new ArrayList<IObserver>();
 
     public Book(String id, String name, String editor, String edition, String year, ArrayList<String> authors) {
         this.id = id;
@@ -49,51 +53,35 @@ public class Book {
         return null;
     }
 
+    public void checkNumberReservations() {
+        if (this.reservations.size() >= 2) {
+            notifyObservers();
+        }
+    }
+
+    public void addReservation(User user) {
+        user.addReservation(this);
+
+        this.reservations.add(user);
+
+        checkNumberReservations();
+        // Precisa de mais coisas para o design partner observer
+    }
+
+    @Override
+    public void addObserver(IObserver user) {
+        this.observers.add(user);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for(IObserver observer: this.observers) {
+            observer.update();
+        }
+    }
+
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEditor() {
-        return editor;
-    }
-
-    public void setEditor(String editor) {
-        this.editor = editor;
-    }
-
-    public String getEdition() {
-        return edition;
-    }
-
-    public void setEdition(String edition) {
-        this.edition = edition;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public ArrayList<String> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(ArrayList<String> authors) {
-        this.authors = authors;
-    }
 }

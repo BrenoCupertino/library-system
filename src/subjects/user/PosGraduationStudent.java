@@ -4,7 +4,7 @@ import strategy.ILoanStrategy;
 
 public class PosGraduationStudent extends User {
     static final int maxLoanBooks = 2;
-    static final int maxLoanDays = 4;
+    static final int maxLoanDays = 5;
 
     public PosGraduationStudent(String id, String name, ILoanStrategy loanStrategy) {
         super(id, name, loanStrategy, maxLoanDays);

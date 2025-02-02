@@ -6,9 +6,9 @@ public class ReservedBook {
     Book book;
     private LocalDate reservedDate;
 
-    public ReservedBook(Book book, LocalDate reservedDate) {
+    public ReservedBook(Book book) {
         this.book = book;
-        this.reservedDate = reservedDate;
+        this.reservedDate = LocalDate.now();
     }
 
     public LocalDate getReservedDate() {

@@ -2,6 +2,7 @@ package command;
 
 import mainsystem.LoadParameters;
 import mainsystem.Repository;
+import subjects.user.User;
 
 public class UserInfoCommand implements Icommand {
 
@@ -12,6 +13,7 @@ public class UserInfoCommand implements Icommand {
     }
 
     public void execute(LoadParameters parameters) {
-        // Invoker responsavel por tranferir o comando para o receiver (repository) executar
+        User user = repository.getUserById(parameters.getFirstParameter());
+        repository.userInfoRequest(user);
     }
 }

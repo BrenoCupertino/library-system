@@ -1,5 +1,7 @@
 package mainsystem;
 
+import observer.IObserver;
+import subjects.user.Professor;
 import subjects.user.User;
 import subjects.books.Book;
 
@@ -20,7 +22,32 @@ public class Repository {
         return repository;
     }
 
-    public void loanBook(User user, Book book) {
+    public void bookInfoRequest (Book book) {
+
+    }
+
+    public void userInfoRequest (User user) {
+
+    }
+
+    public void notificationRequest (User user) {
+        Professor prof = (Professor)user;
+        prof.getNotificationCount();
+    }
+
+    public void observerResquest(User user, Book book) {
+        book.addObserver((Professor)user);
+    }
+
+    public void reservationRequest(User user, Book book) {
+        book.addReservation(user);
+    }
+
+    public void devolutionRequest(User user, Book book) {
+        user.returnBook(book);
+    }
+
+    public void loanResquest(User user, Book book) {
         user.loanBook(book);
     }
 
@@ -30,8 +57,7 @@ public class Repository {
                 return user;
             }
         }
-        // Fazer uma classe que terá diversas mensagens de erro
-        throw new RuntimeException();
+        return null;
     }
 
     public Book getBookById(String bookId) {
@@ -40,8 +66,7 @@ public class Repository {
                 return book;
             }
         }
-        // Fazer uma classe que terá diversas mensagens de erro
-        throw new RuntimeException();
+        return null;
     }
 
     public void addUser(User user) {
