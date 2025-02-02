@@ -1,4 +1,4 @@
-package objects;
+package subjects;
 
 import strategy.LoanStrategy;
 

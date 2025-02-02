@@ -2,6 +2,8 @@ package command;
 
 import mainsystem.LoadParameters;
 import mainsystem.Repository;
+import subjects.Book;
+import subjects.User;
 
 public class LoanCommand implements Icommand {
 
@@ -13,5 +15,8 @@ public class LoanCommand implements Icommand {
 
     public void execute(LoadParameters parameters) {
         // Invoker responsavel por tranferir o comando para o receiver (repository) executar
+        User user = repository.getUserById(parameters.getFirstParameter());
+        Book book = repository.getBookById(parameters.getSecondParameter());
+        repository.loanBook(user, book);
     }
 }

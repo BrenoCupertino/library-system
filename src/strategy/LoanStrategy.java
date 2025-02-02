@@ -1,5 +1,8 @@
 package strategy;
 
+import subjects.Book;
+import subjects.User;
+
 public interface LoanStrategy {
-    public void canGetLoan(User user, Book book);
+    boolean canGetLoan(User user, Book book);
 }

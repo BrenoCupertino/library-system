@@ -1,8 +1,6 @@
-package objects;
+package subjects;
 
 import strategy.LoanStrategy;
-
-import java.util.ArrayList;
 
 public class Professor extends User {
 
