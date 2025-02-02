@@ -1,15 +1,15 @@
 package strategy;
 
 import strategy.rules.*;
-import subjects.Book;
-import subjects.User;
+import subjects.books.Book;
+import subjects.user.User;
 
 import java.util.ArrayList;
 
-public class StudentLoanStrategy implements LoanStrategy {
+public class StudentILoanStrategy implements ILoanStrategy {
     private ArrayList<ILoanRule> rules = new ArrayList<ILoanRule>();
 
-    public StudentLoanStrategy() {
+    public StudentILoanStrategy() {
         initializeRules();
     }
 

@@ -1,4 +1,4 @@
-package subjects;
+package subjects.books;
 
 public class BookSample {
     private String id;

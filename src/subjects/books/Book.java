@@ -1,4 +1,6 @@
-package subjects;
+package subjects.books;
+
+import subjects.user.User;
 
 import java.util.ArrayList;
 
@@ -10,7 +12,7 @@ public class Book {
     private String year;
     private ArrayList<String> authors = new ArrayList<String>();
     private ArrayList<BookSample> samples = new ArrayList<BookSample>();
-    private ArrayList<User> reserves = new ArrayList<User>();
+    private ArrayList<User> reservations = new ArrayList<User>();
 
     public Book(String id, String name, String editor, String edition, String year, ArrayList<String> authors) {
         this.id = id;
@@ -21,8 +23,12 @@ public class Book {
         this.authors = authors;
     }
 
+    public void removeReservation (User user) {
+        this.reservations.remove(user);
+    }
+
     public boolean isFullyReserved() {
-        return this.reserves.size() >= this.samples.size();
+        return this.reservations.size() >= this.samples.size();
     }
 
     public boolean isBookAvailable() {
@@ -40,7 +46,6 @@ public class Book {
                 return sample;
             }
         }
-
         return null;
     }
 

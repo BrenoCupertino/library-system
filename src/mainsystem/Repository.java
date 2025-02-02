@@ -1,10 +1,9 @@
 package mainsystem;
 
-import subjects.User;
-import subjects.Book;
+import subjects.user.User;
+import subjects.books.Book;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Repository {
@@ -23,7 +22,6 @@ public class Repository {
 
     public void loanBook(User user, Book book) {
         user.loanBook(book);
-
     }
 
     public User getUserById(String userId) {

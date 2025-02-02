@@ -1,4 +1,4 @@
-package subjects;
+package subjects.books;
 
 public enum LoanStatus {
     LATE,

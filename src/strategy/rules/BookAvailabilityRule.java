@@ -1,7 +1,7 @@
 package strategy.rules;
 
-import subjects.Book;
-import subjects.User;
+import subjects.books.Book;
+import subjects.user.User;
 
 public class BookAvailabilityRule implements ILoanRule{
     public boolean failValidation(User user, Book book) {

@@ -1,9 +1,30 @@
 package strategy;
 
-public class ProfessorLoanStrategy implements LoanStrategy {
+import strategy.rules.*;
+import subjects.books.Book;
+import subjects.user.User;
+
+import java.util.ArrayList;
+
+public class ProfessorLoanStrategy implements ILoanStrategy {
+    private ArrayList<ILoanRule> rules = new ArrayList<ILoanRule>();
+
+    public ProfessorLoanStrategy() {
+        initializeRules();
+    }
+
+    public void initializeRules(){
+        rules.add(new BookAvailabilityRule());
+        rules.add(new UserLoanStatusRule());
+    }
 
     @Override
-    public void canGetLoan(User user, Book book) {
-
+    public boolean canGetLoan(User user, Book book) {
+        for (ILoanRule rule : rules) {
+            if (rule.failValidation(user, book)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

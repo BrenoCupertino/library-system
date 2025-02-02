@@ -2,8 +2,8 @@ package command;
 
 import mainsystem.LoadParameters;
 import mainsystem.Repository;
-import subjects.Book;
-import subjects.User;
+import subjects.books.Book;
+import subjects.user.User;
 
 public class LoanCommand implements Icommand {
 
