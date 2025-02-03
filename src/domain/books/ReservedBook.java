@@ -1,4 +1,4 @@
-package subjects.books;
+package domain.books;
 
 import java.time.LocalDate;
 

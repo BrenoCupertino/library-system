@@ -1,8 +1,8 @@
 package strategy.rules;
 
 import exceptions.UserIsDebtorException;
-import subjects.books.Book;
-import subjects.user.User;
+import domain.books.Book;
+import domain.user.User;
 
 public class UserLoanStatusRule implements ILoanRule{
 

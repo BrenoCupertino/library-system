@@ -1,8 +1,8 @@
 package command;
 
-import mainsystem.LoadParameters;
-import mainsystem.Repository;
-import subjects.user.User;
+import businessstrategy.LoadParameters;
+import businessstrategy.Repository;
+import domain.user.User;
 
 public class UserInfoCommand implements Icommand {
 

@@ -1,9 +1,7 @@
 package command;
 
-import mainsystem.LoadParameters;
-import mainsystem.Repository;
-import subjects.books.Book;
-import subjects.user.User;
+import businessstrategy.LoadParameters;
+import businessstrategy.Repository;
 
 public class ReserveCommand implements Icommand {
 
@@ -14,8 +12,6 @@ public class ReserveCommand implements Icommand {
     }
 
     public void execute(LoadParameters parameters) {
-        User user = repository.getUserById(parameters.getFirstParameter());
-        Book book = repository.getBookById(parameters.getSecondParameter());
-        repository.reservationRequest(user, book);
+        repository.reservationRequest(parameters.getFirstParameter(), parameters.getSecondParameter());
     }
 }

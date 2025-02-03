@@ -1,4 +1,4 @@
-package subjects.books;
+package domain.books;
 
 public class BookSample {
     private String id;
@@ -8,6 +8,13 @@ public class BookSample {
     public BookSample(String id, Book book) {
         this.id = id;
         this.book = book;
+    }
+
+    public String getMessageStatus() {
+        if(this.avaliable) {
+            return "disponível";
+        }
+        return "emprestado";
     }
 
     public String getId() {

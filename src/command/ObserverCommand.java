@@ -1,9 +1,7 @@
 package command;
 
-import mainsystem.LoadParameters;
-import mainsystem.Repository;
-import subjects.books.Book;
-import subjects.user.User;
+import businessstrategy.LoadParameters;
+import businessstrategy.Repository;
 
 public class ObserverCommand implements Icommand {
 
@@ -14,9 +12,6 @@ public class ObserverCommand implements Icommand {
     }
 
     public void execute(LoadParameters parameters) {
-        // Invoker responsavel por tranferir o comando para o receiver (repository) executar
-        User user = repository.getUserById(parameters.getFirstParameter());
-        Book book = repository.getBookById(parameters.getSecondParameter());
-        repository.observerResquest(user, book);
+        repository.observerResquest(parameters.getFirstParameter(), parameters.getSecondParameter());
     }
 }

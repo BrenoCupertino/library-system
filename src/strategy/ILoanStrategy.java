@@ -1,7 +1,7 @@
 package strategy;
 
-import subjects.books.Book;
-import subjects.user.User;
+import domain.books.Book;
+import domain.user.User;
 
 public interface ILoanStrategy {
     boolean canGetLoan(User user, Book book);

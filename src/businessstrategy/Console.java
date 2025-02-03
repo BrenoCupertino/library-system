@@ -1,8 +1,7 @@
-package mainsystem;
+package businessstrategy;
 
 import command.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Console {
@@ -11,6 +10,7 @@ public class Console {
 
     public Console() {
         initializeCommands();
+        console = this;
     }
 
     public void initializeCommands() {
@@ -23,15 +23,18 @@ public class Console {
         commands.put("ntf", new NotificationCommand());
     }
 
+    public void displayMessage(String message) {
+        clearConsole();
+        System.out.println("-----------------------------");
+        System.out.println(message);
+        System.out.println("-----------------------------");
+    }
+
     public static Console getInstance() {
         if (console == null) {
             console = new Console();
         }
         return console;
-    }
-
-    public void log(String str) {
-        System.out.println(str);
     }
 
     public void clearConsole() {

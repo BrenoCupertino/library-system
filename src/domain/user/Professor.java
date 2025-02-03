@@ -1,4 +1,4 @@
-package subjects.user;
+package domain.user;
 
 import observer.IObserver;
 import strategy.ILoanStrategy;

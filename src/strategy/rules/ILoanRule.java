@@ -1,7 +1,7 @@
 package strategy.rules;
 
-import subjects.books.Book;
-import subjects.user.User;
+import domain.books.Book;
+import domain.user.User;
 
 public interface ILoanRule {
     void validation(User user, Book book);

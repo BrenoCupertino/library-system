@@ -1,8 +1,8 @@
 package strategy.rules;
 
 import exceptions.BookNotAvailableException;
-import subjects.books.Book;
-import subjects.user.User;
+import domain.books.Book;
+import domain.user.User;
 
 public class BookAvailabilityRule implements ILoanRule{
     public void validation(User user, Book book) {

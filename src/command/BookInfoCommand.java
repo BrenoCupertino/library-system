@@ -1,7 +1,7 @@
 package command;
 
-import mainsystem.LoadParameters;
-import mainsystem.Repository;
+import businessstrategy.LoadParameters;
+import businessstrategy.Repository;
 
 public class BookInfoCommand implements Icommand {
 
@@ -12,6 +12,6 @@ public class BookInfoCommand implements Icommand {
     }
 
     public void execute(LoadParameters parameters) {
-        // Invoker responsavel por tranferir o comando para o receiver (repository) executar
+        repository.bookInfoRequest(parameters.getFirstParameter());
     }
 }

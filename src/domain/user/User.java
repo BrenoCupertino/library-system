@@ -1,17 +1,15 @@
-package subjects.user;
+package domain.user;
 
 import exceptions.BookAlreadyReservedException;
 import exceptions.DevolutionBookException;
-import exceptions.LoanLimitExceededException;
 import exceptions.ReserveLimitExceededException;
 import strategy.ILoanStrategy;
-import subjects.books.LoanStatus;
-import subjects.books.Book;
-import subjects.books.BookSample;
-import subjects.books.LoanedBook;
-import subjects.books.ReservedBook;
+import domain.books.LoanStatus;
+import domain.books.Book;
+import domain.books.BookSample;
+import domain.books.LoanedBook;
+import domain.books.ReservedBook;
 
-import java.nio.file.ReadOnlyFileSystemException;
 import java.util.ArrayList;
 
 public abstract class User {
@@ -135,6 +133,14 @@ public abstract class User {
         if(canIReserve(book)) {
             this.reserves.add(new ReservedBook(book));
         }
+    }
+
+    public ArrayList<LoanedBook> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(ArrayList<LoanedBook> loans) {
+        this.loans = loans;
     }
 
     public abstract boolean userOnLimit();

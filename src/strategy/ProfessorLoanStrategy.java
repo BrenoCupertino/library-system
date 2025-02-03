@@ -1,8 +1,8 @@
 package strategy;
 
 import strategy.rules.*;
-import subjects.books.Book;
-import subjects.user.User;
+import domain.books.Book;
+import domain.user.User;
 
 import java.util.ArrayList;
 

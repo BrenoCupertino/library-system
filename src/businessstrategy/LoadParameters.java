@@ -1,4 +1,4 @@
-package mainsystem;
+package businessstrategy;
 
 public class LoadParameters {
     private String firstParameter;
