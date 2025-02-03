@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 
+
 public class AlunoPosGraduacao extends UsuarioAbstrato
 {
     protected int quantidadeLimiteDeEmprestimos;
@@ -38,6 +39,50 @@ public class AlunoPosGraduacao extends UsuarioAbstrato
         }
     }
     
+    public String devolver(Livro livro)
+    {
+        String mensagemDeRetorno;
+        RegraEmprestimoAbstratoAluno verificadorDeDisponibilidade = new RegraEmprestimoAlunoPosGraduacao();
+        boolean disponivel = verificadorDeDisponibilidade.podeDevolver(this, livro);
+        
+        if (disponivel) 
+        {
+            Repositorio repositorio = Repositorio.obterInstancia();
+            repositorio.removerEmprestimoDaLista(this.getCodigo(), livro.getCodigo());
+            super.livrosEmEmprestimo.remove(livro);
+            livro.obterExemplarIndisponivel().disponibilizarExemplar();
+            mensagemDeRetorno = String.format("Devolução do livro %s realizada com sucesso para o usuário %s", livro.getTitulo() ,super.getNome());
+            return mensagemDeRetorno;
+        }
+        else
+        {
+            mensagemDeRetorno = String.format("Não foi possível realizar a devolução do livro %s para o usuário %s, pois não há empréstimos em aberto", livro.getTitulo() ,super.getNome());
+            return mensagemDeRetorno;
+        }
+    }
+
+    @Override
+    public String reservar(Livro livro)
+    {
+        String mensagemDeRetorno;
+        RegraEmprestimoAbstratoAluno verificadorDeDisponibilidade = new RegraEmprestimoAlunoPosGraduacao();
+        
+        boolean disponivel = verificadorDeDisponibilidade.podeReservar(this, livro);
+
+        if (disponivel)
+        {
+            Repositorio repositorio = Repositorio.obterInstancia();
+            Reserva reserva = Fabrica.criarReserva(this, livro);
+            repositorio.adicionarReserva(reserva);
+            mensagemDeRetorno = String.format("Reserva do livro %s realizada com sucesso para o usuário %s", livro.getTitulo() ,super.getNome());
+            return mensagemDeRetorno;
+        }
+        else{
+            mensagemDeRetorno = String.format("Não foi possível realizar a reserva do livro %s para o usuário %s, pois o usuário já excedeu o limite máximo de reservas", livro.getTitulo() ,super.getNome());
+            return mensagemDeRetorno;
+        }
+    }
+
     public boolean abaixoLimiteDeEmprestimos()
     {
         for (Livro livro : livrosEmEmprestimo)

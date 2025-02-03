@@ -69,4 +69,14 @@ public class Livro
     {
         exemplares.add(exemplar);
     }
+
+    public Exemplar obterExemplarIndisponivel()
+    {
+        for (Exemplar exemplar : exemplares)
+        {
+            if (!exemplar.isDisponivel())
+                return exemplar;
+        }
+        return null;
+    }
 }

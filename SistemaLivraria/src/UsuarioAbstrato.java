@@ -1,4 +1,5 @@
 
+
 // Utilização do padrão Strategy para implementar a lógica dos usuários
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public abstract class UsuarioAbstrato
     protected List<Livro> livrosEmEmprestimo = new ArrayList<Livro>();
 
     public abstract String emprestar(Livro livro);
+    public abstract String devolver(Livro livro);
+    public abstract String reservar(Livro livro);
 
     public String getCodigo()
     {
@@ -32,4 +35,5 @@ public abstract class UsuarioAbstrato
     {
         return this.nome;
     }
+
 }

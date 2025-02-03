@@ -3,6 +3,8 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
+import java.util.List;
 
 public class Repositorio
 {
@@ -65,15 +67,64 @@ public class Repositorio
         return emprestimos;
     }
 
-    public void removerReservaDaLista(String codigoDoUsuario, String codigoDoLivro)
-    {
-        for(Reserva reserva : reservas)
-        {
-            if(reserva.getCodigoDoUsuario().equals(codigoDoUsuario) && reserva.getCodigoDoLivro().equals(codigoDoLivro))
-                {
-                    reserva.cancelarReserva();
-                    reservas.remove(reserva);
-                }
+    public void removerReservaDaLista(String codigoDoUsuario, String codigoDoLivro) {
+        Iterator<Reserva> iterator = reservas.iterator();
+        
+        while (iterator.hasNext()) {
+            Reserva reserva = iterator.next();
+            
+            if (reserva.getCodigoDoUsuario().equals(codigoDoUsuario) && 
+                reserva.getCodigoDoLivro().equals(codigoDoLivro)) {
+                
+                reserva.cancelarReserva();
+                iterator.remove();
+            }
         }
+    }
+
+    public void removerEmprestimoDaLista(String codigoDoUsuario, String codigoDoLivro)
+    {
+        Iterator<Emprestimo> iterator = emprestimos.iterator();
+        
+        while (iterator.hasNext()) {
+            Emprestimo emprestimo = iterator.next();
+            
+            if (emprestimo.getCodigoDoUsuario().equals(codigoDoUsuario) && 
+                emprestimo.getCodigoDoLivro().equals(codigoDoLivro)) {
+                
+                if (emprestimo.getEmprestimoEmAberto()) {
+                    emprestimo.cancelarEmprestimo();
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    public void adicionarUsuarioNaBase(UsuarioAbstrato usuario)
+    {
+        usuarios.add(usuario);
+    }
+
+    public void adicionarLivroNaBase(Livro livro)
+    {
+        livros.add(livro);
+    }
+
+    public int obterQuantidadeDeReservasDeUmUsuario(UsuarioAbstrato usuario)
+    {
+        int quantidadeDeReservas = 0;
+        for (Reserva reserva : reservas)
+        {
+            if (reserva.getCodigoDoUsuario().equals(usuario.getCodigo()))
+            {
+                quantidadeDeReservas++;
+            }
+        }
+        return quantidadeDeReservas;
+    }
+
+    public void adicionarReserva(Reserva reserva)
+    {
+        reservas.add(reserva);
     }
 }

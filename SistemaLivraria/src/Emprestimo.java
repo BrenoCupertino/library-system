@@ -43,4 +43,14 @@ public class Emprestimo
     {
         return this.dataFim;
     }
+
+    public String getCodigoDoLivro()
+    {
+        return this.codigoDoLivro;
+    }
+    
+    public void cancelarEmprestimo()
+    {
+        this.emprestimoEmAberto = false;
+    }
 }

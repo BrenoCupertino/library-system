@@ -1,5 +1,5 @@
 
 public interface Comando {
-	public void executar(CarregadorParametros carregadorParametros);
+	public String executar(CarregadorParametros carregadorParametros);
 
 }
