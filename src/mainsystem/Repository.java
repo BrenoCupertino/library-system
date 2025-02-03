@@ -1,6 +1,6 @@
 package mainsystem;
 
-import observer.IObserver;
+import messages.MessageManager;
 import subjects.user.Professor;
 import subjects.user.User;
 import subjects.books.Book;
@@ -11,6 +11,8 @@ import java.util.Objects;
 public class Repository {
     private ArrayList<User> users = new ArrayList<User>();
     private ArrayList<Book> books = new ArrayList<Book>();
+    private Console console = Console.getInstance();
+
     private static Repository repository;
 
     private Repository(){}
@@ -32,23 +34,51 @@ public class Repository {
 
     public void notificationRequest (User user) {
         Professor prof = (Professor)user;
-        prof.getNotificationCount();
+        int timesNotified = prof.getNotificationCount();
+
+        console.clearConsole();
+        MessageManager.notificationSucceededMessage(user ,timesNotified);
+
     }
 
     public void observerResquest(User user, Book book) {
         book.addObserver((Professor)user);
+
+        console.clearConsole();
+        MessageManager.addObserverSucceededMessage(user, book);
     }
 
     public void reservationRequest(User user, Book book) {
-        book.addReservation(user);
+        try {
+            book.addReservation(user);
+            console.clearConsole();
+            MessageManager.reservationSucceededMessage(user, book);
+        } catch (Exception e) {
+            console.clearConsole();
+            MessageManager.ExceptionMessage(e.getMessage());
+        }
     }
 
     public void devolutionRequest(User user, Book book) {
-        user.returnBook(book);
+        try {
+            user.returnBook(book);
+            console.clearConsole();
+            MessageManager.devolutionSucceededMessage(user, book);
+        } catch (Exception e) {
+            console.clearConsole();
+            MessageManager.ExceptionMessage(e.getMessage());
+        }
     }
 
     public void loanResquest(User user, Book book) {
-        user.loanBook(book);
+        try {
+            user.loanBook(book);
+            console.clearConsole();
+            MessageManager.loanSucceededMessage(user, book);
+        } catch (Exception e) {
+            console.clearConsole();
+            MessageManager.ExceptionMessage(e.getMessage());
+        }
     }
 
     public User getUserById(String userId) {

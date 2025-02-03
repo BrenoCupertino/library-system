@@ -23,9 +23,7 @@ public class StudentILoanStrategy implements ILoanStrategy {
     @Override
     public boolean canGetLoan(User user, Book book) {
         for (ILoanRule rule : rules) {
-            if (rule.failValidation(user, book)) {
-                return false;
-            }
+            rule.validation(user, book);
         }
         return true;
     }

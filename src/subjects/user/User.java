@@ -1,5 +1,9 @@
 package subjects.user;
 
+import exceptions.BookAlreadyReservedException;
+import exceptions.DevolutionBookException;
+import exceptions.LoanLimitExceededException;
+import exceptions.ReserveLimitExceededException;
 import strategy.ILoanStrategy;
 import subjects.books.LoanStatus;
 import subjects.books.Book;
@@ -7,6 +11,7 @@ import subjects.books.BookSample;
 import subjects.books.LoanedBook;
 import subjects.books.ReservedBook;
 
+import java.nio.file.ReadOnlyFileSystemException;
 import java.util.ArrayList;
 
 public abstract class User {
@@ -88,7 +93,6 @@ public abstract class User {
         if (this.canGetLoan(book)) {
             sample.setAvaliable(false);
             loans.add(new LoanedBook(sample, this.maxLoanDays));
-            //Mensagem de sucesso
         }
         this.analyseReservation(book);
     }
@@ -104,13 +108,11 @@ public abstract class User {
     public void returnBook(Book book) {
         LoanedBook loanedBook = getLoanedBook(book);
         if(loanedBook == null) {
-            //Mensagem de Erro
-            return;
+            throw new DevolutionBookException();
         }
         removeLoanedBook(loanedBook);
         loanedBook.returnedBook();
         addLoanedBookToHistory(loanedBook);
-        //Mensagem Sucesso
     }
 
     public boolean onReservationLimit() {
@@ -119,23 +121,20 @@ public abstract class User {
 
     public boolean canIReserve(Book book) {
         if(!onReservationLimit()) {
-            return false;
+            throw new ReserveLimitExceededException();
         }
 
         if(isBookReserved(book)) {
-            return false;
+            throw new BookAlreadyReservedException();
         }
 
         return true;
     }
 
     public void addReservation(Book book) {
-        if(!canIReserve(book)) {
-            return;
+        if(canIReserve(book)) {
+            this.reserves.add(new ReservedBook(book));
         }
-
-        this.reserves.add(new ReservedBook(book));
-
     }
 
     public abstract boolean userOnLimit();

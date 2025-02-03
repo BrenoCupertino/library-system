@@ -1,10 +1,13 @@
 package strategy.rules;
 
+import exceptions.BookNotAvailableException;
 import subjects.books.Book;
 import subjects.user.User;
 
 public class BookAvailabilityRule implements ILoanRule{
-    public boolean failValidation(User user, Book book) {
-        return !book.isBookAvailable();
+    public void validation(User user, Book book) {
+        if(!book.isBookAvailable()) {
+            throw  new BookNotAvailableException();
+        };
     }
 }

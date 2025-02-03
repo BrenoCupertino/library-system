@@ -2,17 +2,17 @@ package subjects.books;
 
 import observer.IObserver;
 import observer.ISubject;
-import subjects.user.Professor;
 import subjects.user.User;
 
 import java.util.ArrayList;
 
 public class Book implements ISubject {
     private String id;
-    private String name;
+    private String title;
     private String editor;
     private String edition;
     private String year;
+    private static final int minReversesToNotify = 2;
     private ArrayList<String> authors;
     private ArrayList<BookSample> samples = new ArrayList<BookSample>();
     private ArrayList<User> reservations = new ArrayList<User>();
@@ -20,7 +20,7 @@ public class Book implements ISubject {
 
     public Book(String id, String name, String editor, String edition, String year, ArrayList<String> authors) {
         this.id = id;
-        this.name = name;
+        this.title = name;
         this.editor = editor;
         this.edition = edition;
         this.year = year;
@@ -54,7 +54,7 @@ public class Book implements ISubject {
     }
 
     public void checkNumberReservations() {
-        if (this.reservations.size() >= 2) {
+        if (this.reservations.size() >= minReversesToNotify) {
             notifyObservers();
         }
     }
@@ -65,7 +65,6 @@ public class Book implements ISubject {
         this.reservations.add(user);
 
         checkNumberReservations();
-        // Precisa de mais coisas para o design partner observer
     }
 
     @Override
@@ -84,4 +83,11 @@ public class Book implements ISubject {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

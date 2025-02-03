@@ -4,5 +4,5 @@ import subjects.books.Book;
 import subjects.user.User;
 
 public interface ILoanRule {
-    boolean failValidation(User user, Book book);
+    void validation(User user, Book book);
 }
