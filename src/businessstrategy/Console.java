@@ -1,16 +1,21 @@
 package businessstrategy;
 
 import command.*;
+import messages.MessageGenerator;
 
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class Console {
-    private final HashMap<String, Icommand> commands = new HashMap<String, Icommand>();
+    private HashMap<String, Icommand> commands = new HashMap<String, Icommand>();
+    private Scanner scanner;
     private static Console console;
 
     public Console() {
-        initializeCommands();
+        scanner = new Scanner(System.in);
         console = this;
+        initializeCommands();
     }
 
     public void initializeCommands() {
@@ -44,7 +49,26 @@ public class Console {
 
     public void start() {
 
-        while (true) {}
+        while (true) {
+            System.out.println(MessageGenerator.defaultMessage());
+            String input = scanner.nextLine();
+            String[] commandAndArgs = input.split(" ");
+            String command = commandAndArgs[0];
+
+            if(Objects.equals(command, "sai")) {
+                System.out.println(MessageGenerator.exitMessage());
+                break;
+            }
+
+            if(commandAndArgs.length > 2) {
+                LoadParameters args = new LoadParameters(commandAndArgs[1], commandAndArgs[2]);
+                executeCommand(command, args);
+            } else {
+                LoadParameters args = new LoadParameters(commandAndArgs[1]);
+                executeCommand(command, args);
+            }
+
+        }
     }
 
     public void executeCommand(String strCommand, LoadParameters args) {

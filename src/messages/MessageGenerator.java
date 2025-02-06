@@ -24,4 +24,12 @@ public class MessageGenerator {
     public static String addObserverSucceededMessage(User user, Book book) {
         return "[Sucesso] " + user.getName() + " é observador do livro: " + book.getTitle();
     }
+
+    public static String defaultMessage() {
+        return "Digite um comando: ";
+    }
+
+    public static String exitMessage() {
+        return "Saindo...";
+    }
 }

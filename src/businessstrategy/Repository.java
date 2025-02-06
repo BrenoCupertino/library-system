@@ -13,7 +13,6 @@ import java.util.Objects;
 public class Repository {
     private ArrayList<User> users = new ArrayList<User>();
     private ArrayList<Book> books = new ArrayList<Book>();
-    private final Console console = Console.getInstance();
 
     private static Repository repository;
 
@@ -30,13 +29,20 @@ public class Repository {
         try {
             Book book = getBookById(bookId);
             String informations = book.getBookInformations();
-            console.displayMessage(informations);
+            Console.getInstance().displayMessage(informations);
         } catch (Exception e) {
-            console.displayMessage(e.getMessage());
+            Console.getInstance().displayMessage(e.getMessage());
         }
     }
 
-    public void userInfoRequest (User user) {
+    public void userInfoRequest (String userId) {
+        try {
+            User user = getUserById(userId);
+            String informations = user.getUserLoansAndReservesInformations();
+            Console.getInstance().displayMessage(informations);
+        } catch (Exception e) {
+            Console.getInstance().displayMessage(e.getMessage());
+        }
 
     }
 
@@ -45,9 +51,9 @@ public class Repository {
             User user = getUserById(userId);
             Professor prof = (Professor) user;
             int timesNotified = prof.getNotificationCount();
-            console.displayMessage(MessageGenerator.notificationSucceededMessage(user, timesNotified));
+            Console.getInstance().displayMessage(MessageGenerator.notificationSucceededMessage(user, timesNotified));
         } catch (Exception e) {
-            console.displayMessage(e.getMessage());
+            Console.getInstance().displayMessage(e.getMessage());
         }
 
     }
@@ -57,9 +63,9 @@ public class Repository {
             User user = getUserById(userId);
             Book book = getBookById(bookId);
             book.addObserver((Professor) user);
-            console.displayMessage(MessageGenerator.addObserverSucceededMessage(user, book));
+            Console.getInstance().displayMessage(MessageGenerator.addObserverSucceededMessage(user, book));
         } catch (Exception e) {
-            console.displayMessage(e.getMessage());
+            Console.getInstance().displayMessage(e.getMessage());
         }
     }
 
@@ -68,9 +74,9 @@ public class Repository {
             User user = getUserById(userId);
             Book book = getBookById(bookId);
             book.addReservation(user);
-            console.displayMessage(MessageGenerator.reservationSucceededMessage(user, book));
+            Console.getInstance().displayMessage(MessageGenerator.reservationSucceededMessage(user, book));
         } catch (Exception e) {
-            console.displayMessage(e.getMessage());
+            Console.getInstance().displayMessage(e.getMessage());
         }
     }
 
@@ -79,9 +85,9 @@ public class Repository {
             User user = getUserById(userId);
             Book book = getBookById(bookId);
             user.returnBook(book);
-            console.displayMessage(MessageGenerator.devolutionSucceededMessage(user, book));
+            Console.getInstance().displayMessage(MessageGenerator.devolutionSucceededMessage(user, book));
         } catch (Exception e) {
-            console.displayMessage(e.getMessage());
+            Console.getInstance().displayMessage(e.getMessage());
         }
     }
 
@@ -90,9 +96,9 @@ public class Repository {
             User user = getUserById(userId);
             Book book = getBookById(bookId);
             user.loanBook(book);
-            console.displayMessage(MessageGenerator.loanSucceededMessage(user, book));
+            Console.getInstance().displayMessage(MessageGenerator.loanSucceededMessage(user, book));
         } catch (Exception e) {
-            console.displayMessage(e.getMessage());
+            Console.getInstance().displayMessage(e.getMessage());
         }
     }
 
@@ -120,5 +126,13 @@ public class Repository {
 
     public void addBook(Book book) {
         books.add(book);
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 }

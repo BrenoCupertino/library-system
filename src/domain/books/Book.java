@@ -1,5 +1,6 @@
 package domain.books;
 
+import businessstrategy.Repository;
 import observer.IObserver;
 import observer.ISubject;
 import domain.user.User;
@@ -13,12 +14,12 @@ public class Book implements ISubject {
     private String edition;
     private String year;
     private static final int minReversesToNotify = 2;
-    private ArrayList<String> authors;
+    private String authors;
     private ArrayList<BookSample> samples = new ArrayList<BookSample>();
     private ArrayList<User> reservations = new ArrayList<User>();
     private ArrayList<IObserver> observers = new ArrayList<IObserver>();
 
-    public Book(String id, String name, String editor, String edition, String year, ArrayList<String> authors) {
+    public Book(String id, String name, String editor, String authors, String edition, String year) {
         this.id = id;
         this.title = name;
         this.editor = editor;
@@ -54,7 +55,7 @@ public class Book implements ISubject {
     }
 
     public void checkNumberReservations() {
-        if (this.reservations.size() >= minReversesToNotify) {
+        if (this.reservations.size() > minReversesToNotify) {
             notifyObservers();
         }
     }
@@ -69,8 +70,7 @@ public class Book implements ISubject {
 
     public String getSampleLoanInfo(BookSample sample) {
         String loanInfo = "";
-        for (User user : this.reservations) {
-            //Talvez a classe User deva pegar as informações do loan, pois ele guarda a array que os guarda.
+        for (User user: Repository.getInstace().getUsers()) {
             for(LoanedBook loan : user.getLoans()) {
                 if(loan.getBookSample().equals(sample)) {
                     loanInfo += "    Emprestimo por: " + user.getName() + "\n";
@@ -84,6 +84,7 @@ public class Book implements ISubject {
 
     public String getSamplesInfo() {
         String samplesInfo = "";
+
         for(BookSample sample: this.samples) {
             samplesInfo += "ID: " + sample.getId() + " - Status: " + sample.getMessageStatus() + "\n";
             if(!sample.isAvaliable()) {
@@ -95,7 +96,10 @@ public class Book implements ISubject {
 
     public String getReservationsinfo() {
         String reservationInfo = "";
+
         reservationInfo += "Qtn. de reservas: " + this.reservations.size() + "\n";
+        if(this.reservations.isEmpty()) return reservationInfo;
+
         reservationInfo += "Usu. que reservaram: ";
         for (User user : this.reservations) {
             reservationInfo += user.getName() + ", ";
@@ -105,12 +109,9 @@ public class Book implements ISubject {
 
     public String getBookInformations() {
         String informations = "";
-        informations += " Titulo do livro: " + this.title + "\n";
-        informations += "---------------------------------------\n";
+        informations += "Titulo do livro: " + this.title + "\n";
         informations += getReservationsinfo();
-        informations += "---------------------------------------\n";
         informations += getSamplesInfo();
-        informations += "---------------------------------------\n";
         return informations;
     }
 
@@ -124,6 +125,10 @@ public class Book implements ISubject {
         for(IObserver observer: this.observers) {
             observer.update();
         }
+    }
+
+    public void addSample(BookSample sample) {
+        this.samples.add(sample);
     }
 
     public String getId() {
@@ -166,11 +171,11 @@ public class Book implements ISubject {
         this.year = year;
     }
 
-    public ArrayList<String> getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
-    public void setAuthors(ArrayList<String> authors) {
+    public void setAuthors(String authors) {
         this.authors = authors;
     }
 

@@ -15,6 +15,22 @@ public class LoanedBook {
         this.loanStatus = LoanStatus.LOANED;
     }
 
+    public String getMessageFromStatus() {
+        checkAndUpdateStatusToLate();
+
+        if(this.loanStatus == LoanStatus.LOANED) {
+            return "Em curso";
+        } else if(this.loanStatus == LoanStatus.LATE) {
+            return "Atrasado";
+        }
+
+        return "Finalizado";
+    }
+
+    public String getBookTitle() {
+        return this.bookSample.getBook().getTitle();
+    }
+
     public BookSample getBookSample() {
         return bookSample;
     }
@@ -23,6 +39,12 @@ public class LoanedBook {
         setLoanStatus(LoanStatus.RETURNED);
         setLoanReturnDate(LocalDate.now());
         this.bookSample.setAvaliable(true);
+    }
+
+    public void checkAndUpdateStatusToLate() {
+        if(this.loanReturnDate.isBefore(LocalDate.now()) && this.loanStatus != LoanStatus.RETURNED) {
+            setLoanStatus(LoanStatus.LATE);
+        }
     }
 
     public void setBookSample(BookSample bookSample) {

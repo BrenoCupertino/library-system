@@ -6,10 +6,10 @@ import domain.user.User;
 
 import java.util.ArrayList;
 
-public class StudentILoanStrategy implements ILoanStrategy {
+public class StudentLoanStrategy implements ILoanStrategy {
     private ArrayList<ILoanRule> rules = new ArrayList<ILoanRule>();
 
-    public StudentILoanStrategy() {
+    public StudentLoanStrategy() {
         initializeRules();
     }
 

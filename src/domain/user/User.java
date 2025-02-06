@@ -35,6 +35,7 @@ public abstract class User {
 
     public boolean isDebtor() {
         for(LoanedBook loan: this.loans) {
+            loan.checkAndUpdateStatusToLate();
             if(loan.getLoanStatus() == LoanStatus.LATE){
                 return true;
             }
@@ -135,12 +136,45 @@ public abstract class User {
         }
     }
 
-    public ArrayList<LoanedBook> getLoans() {
-        return loans;
+    public String getLoanInformations(ArrayList<LoanedBook> array) {
+        String loanInfo = "";
+
+        if(array.isEmpty()) return "0 \n";
+
+        for(LoanedBook loan: array) {
+            loanInfo += "\n";
+            loanInfo += "   Titulo: " + loan.getBookTitle() + "\n";
+            loanInfo += "   Data do emprestimo: " + loan.getLoanDate() + "\n";
+            loanInfo += "   Status: " + loan.getMessageFromStatus() + "\n";
+            loanInfo += "   Data de devolução: " +loan.getLoanReturnDate() + "\n";
+        }
+
+        return loanInfo;
     }
 
-    public void setLoans(ArrayList<LoanedBook> loans) {
-        this.loans = loans;
+    public String getReserveInformations() {
+        String reserveInfo = "";
+
+        if(this.reserves.isEmpty()) return "0 \n";
+
+        for(ReservedBook reserve: this.reserves) {
+            reserveInfo += "    \nTitulo: " + reserve.getBook().getTitle() + "\n";
+            reserveInfo += "    Data da reserva: " + reserve.getReservedDate()+ "\n";
+            reserveInfo += "\n";
+        }
+
+        return reserveInfo;
+    }
+
+    public String getUserLoansAndReservesInformations() {
+        String informations = "";
+        informations += "Reservas: ";
+        informations += getReserveInformations();
+        informations += "Emprestimos correntes: ";
+        informations += getLoanInformations(this.loans);
+        informations += "Emprestimos antigos: ";
+        informations += getLoanInformations(this.historyLoans);
+        return informations;
     }
 
     public abstract boolean userOnLimit();
@@ -149,23 +183,12 @@ public abstract class User {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public ArrayList<LoanedBook> getLoans() {
+        return loans;
     }
 
-    public ILoanStrategy getLoanStrategy() {
-        return loanStrategy;
-    }
-
-    public void setLoanStrategy(ILoanStrategy loanStrategy) {
-        this.loanStrategy = loanStrategy;
-    }
 }

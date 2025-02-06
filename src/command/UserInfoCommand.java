@@ -2,7 +2,6 @@ package command;
 
 import businessstrategy.LoadParameters;
 import businessstrategy.Repository;
-import domain.user.User;
 
 public class UserInfoCommand implements Icommand {
 
@@ -13,9 +12,6 @@ public class UserInfoCommand implements Icommand {
     }
 
     public void execute(LoadParameters parameters) {
-        User user = repository.getUserById(parameters.getFirstParameter());
-        repository.userInfoRequest(user);
-
-
+        repository.userInfoRequest(parameters.getFirstParameter());
     }
 }

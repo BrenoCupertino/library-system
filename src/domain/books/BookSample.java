@@ -2,7 +2,7 @@ package domain.books;
 
 public class BookSample {
     private String id;
-    private boolean avaliable = false;
+    private boolean avaliable = true;
     private Book book;
 
     public BookSample(String id, Book book) {
